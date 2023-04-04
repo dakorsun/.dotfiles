@@ -8,6 +8,8 @@ export GIT_EDITOR=$VIM
 export DENO_INSTALL="$HOME/.deno"
 export DOTFILES="$HOME/.dotfiles"
 
+bindkey -s ^f "tmux-sessionizer\n"
+
 eslintify() {
     cat $1 > /tmp/file_to_eslint
     npx eslint
