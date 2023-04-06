@@ -4,7 +4,7 @@ if [[ $# -eq 1 ]]; then
     selected=$1
 else
 	selected=$({ 
-		find ~/.dotfiles ~/.dotfiles.git -maxdepth 0 -type d ;
+		find ~/.dotfiles ~/.dotfiles.git ~/.dotfiles.git/*/nvim -maxdepth 0 -type d ;
 		find ~/projects ~/work ~/personal ~/personal/junk ~/personal/tutors -mindepth 1 -maxdepth 1 -type d ;
 	} | fzf )
 fi
