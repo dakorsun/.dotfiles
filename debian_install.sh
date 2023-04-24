@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# git vim curl wget unzip 
-apt install git vim curl wget unzip ;
+# git default stuff 
+apt install git vim curl wget unzip stow ;
 
 # ZSH + OH MY ZSH and around
 apt install zsh ; 
@@ -16,7 +16,6 @@ sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools
 chsh -s /bin/zsh ;
 
 # Neovim
-(cd $USER_HOME && curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage) ;
-chmod u+x $USER_HOME/nvim.appimage ;
-alias nvim='$USER_HOME/nvim.appimage' ;
-
+apt install neovim ;
+git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.local/share/nvim/site/pack/packer/start/packer.nvim ;
+apt install ripgrep fzf ;
