@@ -4,7 +4,7 @@ if [[ -z $STOW_FOLDERS ]]; then
 fi
 
 if [[ -z $DOTFILES ]]; then
-    DOTFILES=$HOME/.dotfiles
+    DOTFILES=$USER_HOME/.dotfiles
 fi
 
 STOW_FOLDERS=$STOW_FOLDERS DOTFILES=$DOTFILES $DOTFILES/debian_install.sh && $DOTFILES/stow.sh
