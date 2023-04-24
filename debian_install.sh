@@ -16,7 +16,7 @@ sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools
 chsh -s /bin/zsh ;
 
 # Neovim
-curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage ;
-chmod u+x nvim.appimage ;
-alias nvim='~/nvim.appimage' ;
+(cd $USER_HOME && curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage) ;
+chmod u+x $USER_HOME/nvim.appimage ;
+alias nvim='$USER_HOME/nvim.appimage' ;
 
