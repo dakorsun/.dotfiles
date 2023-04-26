@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 
-USER_HOME=$(getent passwd ${SUDO_USER:-$USER} | cut -d: -f6)
+mkdir ~/personal/ ~/personal/junk/ ~/personal/tutors/ ;
+mkdir ~/projects/ ;
+mkdir ~/work/ ;
+mkdir ~/.config/fontconfig/ ~/.config/fontconfig/conf.d/ ;
+
+# USER_HOME=$(getent passwd ${SUDO_USER:-$USER} | cut -d: -f7)
 
 if [[ -z $STOW_FOLDERS ]]; then
     STOW_FOLDERS="bin,nvim,tmux,debian,zsh"
