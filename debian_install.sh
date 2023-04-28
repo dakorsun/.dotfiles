@@ -27,7 +27,6 @@ chsh -s /bin/zsh ;
 # Neovim
 curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage ;
 chmod u+x nvim.appimage ;
-alias nvim="~/nvim.appimage" ;
 
 git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.local/share/nvim/site/pack/packer/start/packer.nvim ;
 apt install ripgrep fzf ;
@@ -40,3 +39,7 @@ curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-
 echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main"|tee /etc/apt/sources.list.d/brave-browser-release.list ; 
 apt update ; 
 apt install brave-browser ;
+
+# NVM
+mkdir ~/.nvm
+wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
