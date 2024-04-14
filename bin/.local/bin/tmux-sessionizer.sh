@@ -3,7 +3,7 @@
 if [[ $# -eq 1 ]]; then
     selected=$1
 else
-	selected=$({ 
+	selected=$({
 		# gently search through bare repo
 		find ~/.dotfiles.git/*  \
 		-maxdepth 0 -type d  \
@@ -16,8 +16,8 @@ else
 		-and -not -path '*hooks*' \
 		-and -not -path '*logs*' \
 		-and -not -path '*refs*' ;
-		find ~/.dotfiles ~/.dotfiles.git ~/.dotfiles.git/*/nvim ~/projects/* -maxdepth 0 -type d ;
-		find ~/projects/* ~/work ~/personal ~/personal/junk ~/personal/tutors -mindepth 1 -maxdepth 1 -type d ;
+		find ~/.dotfiles ~/.dotfiles.git ~/.dotfiles.git/*/nvim ~/projects/* ~/personal/* -maxdepth 0 -type d ;
+		find ~/projects/* ~/personal/* ~/work ~/personal ~/personal/junk ~/personal/tutors -mindepth 1 -maxdepth 1 -type d ;
 	} | fzf )
 fi
 
