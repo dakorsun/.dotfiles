@@ -30,6 +30,7 @@ install_zsh() {
         echo "Existing .zshrc moved to .zshrc.backup"
     fi
     ln -s "$DOTFILES/zsh/.zshrc" "$HOME/.zshrc"
+    ln -s "$DOTFILES/zsh/.zsh_profile" "$HOME/.zsh_profile"
 
     echo -e "\nZsh is installed and set as the default shell."
     echo -e "\nPlease close this terminal and open a new one for Zsh to take effect."
