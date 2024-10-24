@@ -136,6 +136,15 @@ else
     echo "Node.js is already installed."
 fi
 }
+install_stow() {
+# --- Install tmux ---
+if ! command -v tmux &> /dev/null; then
+    echo "Installing tmux..."
+    sudo apt install -y tmux
+else
+    echo "tmux is already installed."
+fi
+}
 
 setup_folders() {
     echo "Creating necessary directories..."
@@ -232,9 +241,10 @@ if [ "$SHELL" != "$(which zsh)" ]; then
     exit 0  # Stop the script so the user can reopen the terminal in Zsh
 else
     echo "Zsh is already the default shell. Continuing with Neovim installation and stow setup..."
-    run_stow
     install_node
     install_neovim
+    install_tmux
+    run_stow
     setup_folders
     install_fonts
     echo "Setup complete! Please restart your terminal for changes to take full effect."
