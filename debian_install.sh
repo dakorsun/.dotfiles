@@ -64,28 +64,21 @@ install_neovim() {
     make CMAKE_BUILD_TYPE=Release
     sudo make install
 
-    # Alias Neovim
-    if ! grep -q "alias nvim=" ~/.zshrc; then
-        echo "alias nvim='/usr/local/bin/nvim'" >> ~/.zshrc
-        echo "Neovim alias added to ~/.zshrc"
-        source ~/.zshrc
+    # --- Clean up any old 'nvim' alias ---
+    # Remove alias from .zshrc, .bashrc, etc.
+    sed -i '/alias nvim/d' "$HOME/.zshrc"
+    sed -i '/alias nvim/d' "$HOME/.bashrc"
+
+    # Set Neovim alias to point to the version built from source
+    if ! grep -q "alias nvim=" "$HOME/.zshrc"; then
+        echo "alias nvim='/usr/local/bin/nvim'" >> "$HOME/.zshrc"
+        source "$HOME/.zshrc"
     fi
 
-    # Install dependencies for Neovim plugins
-    echo "Installing dependencies for Neovim plugins..."
-    sudo apt install -y ripgrep fzf nodejs python3-pip
-    sudo npm install -g neovim
-    pip3 install --user pynvim
-
-    # Install LazyVim (plugin manager)
-    echo "Setting up LazyVim plugin manager..."
-    if [ ! -d "$HOME/.local/share/nvim/site/pack/packer/start/packer.nvim" ]; then
-        git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.local/share/nvim/site/pack/packer/start/packer.nvim
-    fi
-
-    # Clone LazyVim starter config
-    if [ ! -d "$HOME/.config/nvim" ]; then
-        git clone https://github.com/LazyVim/starter ~/.config/nvim
+    # --- Remove Packer.nvim if exists ---
+    if [ -d "$HOME/.local/share/nvim/site/pack/packer" ]; then
+        echo "Removing existing Packer.nvim installation..."
+        rm -rf "$HOME/.local/share/nvim/site/pack/packer"
     fi
     echo "Neovim setup complete!"
 }
