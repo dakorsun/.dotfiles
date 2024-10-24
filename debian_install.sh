@@ -80,6 +80,12 @@ install_neovim() {
         echo "Removing existing Packer.nvim installation..."
         rm -rf "$HOME/.local/share/nvim/site/pack/packer"
     fi
+    # --- Remove LazyVim if exists ---
+    if [ -d "$HOME/.config/nvim/lazy.nvim" ]; then
+        echo "Removing existing LazyVim installation..."
+        rm -rf "$HOME/.config/nvim/lazy.nvim"
+    fi
+
     echo "Neovim setup complete!"
 }
 
