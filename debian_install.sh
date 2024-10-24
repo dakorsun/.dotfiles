@@ -7,6 +7,16 @@ DOTFILES="$HOME/.dotfiles"
 STOW_FOLDERS="bin,nvim,tmux,debian,zsh"
 OH_MY_ZSH_INSTALL_URL="https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
 
+# --- Font Variables ---
+FONT_DIR="$HOME/.fonts"
+FONT_CONFIG_DIR="$HOME/.config/fontconfig/conf.d"
+NERD_FONTS_DIR="$FONT_DIR/Nerd_Fonts"
+NERD_FONTS_VERSION="v2.3.3"
+NERD_FONTS=("3270" "FiraCode" "Hack" "RobotoMono")  # Add more fonts to the array if needed
+POWERLINE_FONT_URL="https://github.com/powerline/powerline/raw/develop/font/PowerlineSymbols.otf"
+POWERLINE_CONF_URL="https://github.com/powerline/powerline/raw/develop/font/10-powerline-symbols.conf"
+
+
 # --- Functions ---
 install_zsh() {
     echo "Installing Zsh and setting it as the default shell..."
@@ -81,6 +91,15 @@ install_neovim() {
 }
 
 run_stow() {
+    if ! command -v stow &> /dev/null
+    then
+        echo "Stow is not installed. Installing Stow..."
+        sudo apt update
+        sudo apt install -y stow
+    else
+        echo "Stow is already installed."
+    fi
+
     echo "Running Stow for configuration files..."
     pushd "$DOTFILES"
     for folder in $(echo $STOW_FOLDERS | sed "s/,/ /g")
@@ -92,9 +111,118 @@ run_stow() {
     echo "Stow configuration complete!"
 }
 
+install_node() {
+# --- Install NVM (Node Version Manager) ---
+if [ ! -d "$HOME/.nvm" ]; then
+    echo "Installing NVM..."
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+
+    # Load NVM into the current shell session
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
+    echo "NVM installed."
+else
+    echo "NVM is already installed."
+fi
+
+# --- Install Node.js via NVM (Latest 18.x) ---
+if ! command -v node &> /dev/null; then
+    echo "Installing Node.js (latest 18.x)..."
+    nvm install 18
+    nvm use 18
+else
+    echo "Node.js is already installed."
+fi
+}
+
 setup_folders() {
     echo "Creating necessary directories..."
     mkdir -p ~/personal/junk ~/personal/tutors ~/projects ~/work ~/.config/fontconfig/conf.d
+}
+# --- Functions ---
+
+install_powerline_fonts() {
+    echo "Installing Powerline fonts and configuration..."
+
+    # Download Powerline font and configuration
+    wget $POWERLINE_FONT_URL -O PowerlineSymbols.otf
+    wget $POWERLINE_CONF_URL -O 10-powerline-symbols.conf
+
+    # Create necessary directories
+    mkdir -p "$FONT_DIR" "$FONT_CONFIG_DIR"
+
+    # Move files to appropriate directories
+    mv PowerlineSymbols.otf "$FONT_DIR/"
+    mv 10-powerline-symbols.conf "$FONT_CONFIG_DIR/"
+
+    echo "Powerline fonts installed."
+}
+
+install_nerd_fonts() {
+    echo "Installing Nerd Fonts..."
+
+    # Create fonts directory if it doesn't exist
+    mkdir -p "$NERD_FONTS_DIR"
+
+    # Loop through the selected Nerd Fonts to download and install each
+    for font in "${NERD_FONTS[@]}"; do
+        FONT_ZIP_URL="https://github.com/ryanoasis/nerd-fonts/releases/download/$NERD_FONTS_VERSION/${font}.zip"
+        FONT_ZIP_PATH="$HOME/Downloads/Nerd_${font}.zip"
+
+        # Download the Nerd Font
+        echo "Downloading $font font..."
+        wget "$FONT_ZIP_URL" -O "$FONT_ZIP_PATH"
+
+        # Unzip the font to the fonts directory
+        echo "Unzipping $font to $NERD_FONTS_DIR..."
+        unzip -o "$FONT_ZIP_PATH" -d "$NERD_FONTS_DIR"
+
+        # Cleanup
+        rm "$FONT_ZIP_PATH"
+    done
+
+    echo "Nerd Fonts installed."
+}
+
+rebuild_font_cache() {
+    echo "Rebuilding font cache..."
+    fc-cache -fv
+    echo "Font cache rebuilt."
+}
+
+verify_fonts_installed() {
+    echo "Verifying installed fonts..."
+
+    # List installed fonts to check if Powerline and Nerd Fonts are available
+    if fc-list | grep -q "PowerlineSymbols"; then
+        echo "Powerline symbols installed successfully."
+    else
+        echo "Powerline symbols installation failed."
+    fi
+
+    for font in "${NERD_FONTS[@]}"; do
+        if fc-list | grep -q "$font"; then
+            echo "$font Nerd Font installed successfully."
+        else
+            echo "Failed to install $font Nerd Font."
+        fi
+    done
+}
+
+install_fonts(){
+# --- Main Logic ---
+
+# Install Powerline fonts and Nerd Fonts
+install_powerline_fonts
+install_nerd_fonts
+
+# Rebuild the font cache to apply changes
+rebuild_font_cache
+
+# Verify the installation of fonts
+verify_fonts_installed
 }
 
 # --- Main Setup Logic ---
@@ -104,8 +232,10 @@ if [ "$SHELL" != "$(which zsh)" ]; then
     exit 0  # Stop the script so the user can reopen the terminal in Zsh
 else
     echo "Zsh is already the default shell. Continuing with Neovim installation and stow setup..."
-    setup_folders
-    install_neovim
     run_stow
+    install_node
+    install_neovim
+    setup_folders
+    install_fonts
     echo "Setup complete! Please restart your terminal for changes to take full effect."
 fi
