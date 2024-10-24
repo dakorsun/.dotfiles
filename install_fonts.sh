@@ -1,3 +1,4 @@
+# ! /usr/bin/env bash
 # --- Variables ---
 FONT_DIR="$HOME/.fonts"
 FONT_CONFIG_DIR="$HOME/.config/fontconfig/conf.d"
