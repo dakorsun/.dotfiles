@@ -46,11 +46,52 @@ install_zsh() {
     echo -e "\nAfter reopening, rerun this script to continue with Neovim installation and stow setup.\n"
 }
 #
+install_node() {
+    echo ''
+    echo 'Install NVM, Node, pnpm'
+    # --- Install NVM (Node Version Manager) ---
+    # Ensure NVM is installed
+    if ! command -v nvm &>/dev/null; then
+        echo "nvm not found. Installing nvm..."
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+
+        # Load nvm into current shell session
+        export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    else
+        echo "nvm already installed."
+    fi
+
+    if ! nvm list | grep "v18.16" &>/dev/null; then
+        echo "Installing Node.js version 18.16..."
+        nvm install 18.16
+        nvm alias default 18.16
+        nvm use 18.16
+    else
+        echo "Node.js version 18.16 is already installed."
+    fi
+    # Ensure pnpm version 9 is installed
+    if ! command -v pnpm &>/dev/null; then
+        echo "pnpm not found. Installing pnpm version 9..."
+        npm install -g pnpm@9
+    else
+        installed_pnpm_version=$(pnpm --version)
+        if [[ "$installed_pnpm_version" == 9* ]]; then
+            echo "pnpm version 9 is already installed."
+        else
+            echo "Updating pnpm to version 9..."
+            npm install -g pnpm@9
+        fi
+    fi
+}
+
 # Ensure Lua is installed
 install_lua() {
-    if ! command -v lua &> /dev/null; then
+    echo ''
+    echo 'Install Lua'
+    if ! command -v lua &>/dev/null; then
         echo "Lua not found. Installing Lua 5.1..."
-        
+
         # Update package list and install required dependencies
         sudo apt update
         sudo apt install -y build-essential libreadline-dev
@@ -64,12 +105,12 @@ install_lua() {
         sudo make install
         cd .. || exit
         rm -rf lua-$LUA_VERSION*
-        
+
         echo "Lua installed successfully."
-        
+
         # Add Lua to the PATH if not already present
         if ! grep -q "/usr/local/bin" ~/.zshrc; then
-            echo 'export PATH=$PATH:/usr/local/bin' >> ~/.zshrc
+            echo 'export PATH=$PATH:/usr/local/bin' >>~/.zshrc
         fi
 
         # Source the updated .zshrc
@@ -77,7 +118,7 @@ install_lua() {
     else
         lua_version=$(lua -v 2>&1 | grep -oP 'Lua \K\d+\.\d+')
         echo "Lua is already installed. Version: $lua_version"
-        
+
         if [[ "$lua_version" != "5.1" ]]; then
             echo "Please install Lua version 5.1."
             exit 1
@@ -87,20 +128,22 @@ install_lua() {
 
 # Ensure LuaRocks is installed
 install_luarocks() {
-    if ! command -v luarocks &> /dev/null; then
+    echo ''
+    echo 'Install LuaRocks'
+    if ! command -v luarocks &>/dev/null; then
         echo "LuaRocks not found. Installing LuaRocks..."
-        
+
         # Download and install LuaRocks for Lua 5.1
         LUAROCKS_VERSION="3.9.2" # Adjust this to the latest version if needed
         wget https://luarocks.github.io/luarocks/releases/luarocks-$LUAROCKS_VERSION.tar.gz
         tar -xzf luarocks-$LUAROCKS_VERSION.tar.gz
         cd luarocks-$LUAROCKS_VERSION || exit
-        
+
         # Configure LuaRocks
         ./configure --with-lua=/usr/local
         make
         sudo make install
-        
+
         cd .. || exit
         rm -rf luarocks-$LUAROCKS_VERSION*
 
@@ -110,7 +153,34 @@ install_luarocks() {
     fi
 }
 
+install_go() {
+    echo ''
+    echo 'Install Go'
+    # Ensure Go is installed
+    if ! command -v go &>/dev/null; then
+        echo "Go not found. Installing Go..."
+        GO_VERSION="1.20.6" # Change this to the latest version if needed
+        wget https://go.dev/dl/go$GO_VERSION.linux-amd64.tar.gz
+        sudo tar -C /usr/local -xzf go$GO_VERSION.linux-amd64.tar.gz
+        rm go$GO_VERSION.linux-amd64.tar.gz
+
+        # Add Go to the PATH
+        echo 'export PATH=$PATH:/usr/local/go/bin' >>~/.zshrc
+        echo 'export GOPATH=$HOME/go' >>~/.zshrc
+        echo 'export PATH=$PATH:$GOPATH/bin' >>~/.zshrc
+
+        # Apply changes immediately for current session
+        export PATH=$PATH:/usr/local/go/bin
+        export GOPATH=$HOME/go
+        export PATH=$PATH:$GOPATH/bin
+    else
+        echo "Go is already installed. Version: $(go version)"
+    fi
+}
+
 install_neovim() {
+    echo ''
+    echo 'Install Neovim'
     echo "Installing dependencies for building Neovim..."
     sudo apt install -y ninja-build gettext cmake unzip curl git build-essential libtool libtool-bin autoconf automake pkg-config
 
@@ -152,7 +222,41 @@ install_neovim() {
     echo "Neovim setup complete!"
 }
 
+install_lazygit() {
+    echo ''
+    echo 'Install LazyGit'
+    # Ensure lazygit is installed
+    if ! command -v lazygit &>/dev/null; then
+        echo "lazygit not found. Installing lazygit..."
+
+        # If Go is installed, use Go to install lazygit
+        if command -v go &>/dev/null; then
+            go install github.com/jesseduffield/lazygit@latest
+            echo 'export PATH=$PATH:$HOME/go/bin' >>~/.zshrc
+            export PATH=$PATH:$HOME/go/bin
+        else
+            echo "Go is required for lazygit installation. Please install Go first."
+        fi
+    else
+        echo "lazygit is already installed. Version: $(lazygit --version)"
+    fi
+}
+
+install_tmux() {
+    echo ''
+    echo 'Install Tmux'
+    # --- Install tmux ---
+    if ! command -v tmux &>/dev/null; then
+        echo "Installing tmux..."
+        sudo apt install -y tmux
+    else
+        echo "tmux is already installed."
+    fi
+}
+
 run_stow() {
+    echo ''
+    echo 'Run stow'
     if ! command -v stow &>/dev/null; then
         echo "Stow is not installed. Installing Stow..."
         sudo apt update
@@ -169,92 +273,6 @@ run_stow() {
     done
     popd
     echo "Stow configuration complete!"
-}
-
-install_node() {
-    # --- Install NVM (Node Version Manager) ---
-    # Ensure NVM is installed
-    if ! command -v nvm &>/dev/null; then
-        echo "nvm not found. Installing nvm..."
-        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
-
-        # Load nvm into current shell session
-        export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-    else
-        echo "nvm already installed."
-    fi
-
-    if ! nvm list | grep "v18.16" &>/dev/null; then
-        echo "Installing Node.js version 18.16..."
-        nvm install 18.16
-        nvm alias default 18.16
-        nvm use 18.16
-    else
-        echo "Node.js version 18.16 is already installed."
-    fi
-    # Ensure pnpm version 9 is installed
-    if ! command -v pnpm &>/dev/null; then
-        echo "pnpm not found. Installing pnpm version 9..."
-        npm install -g pnpm@9
-    else
-        installed_pnpm_version=$(pnpm --version)
-        if [[ "$installed_pnpm_version" == 9* ]]; then
-            echo "pnpm version 9 is already installed."
-        else
-            echo "Updating pnpm to version 9..."
-            npm install -g pnpm@9
-        fi
-    fi
-}
-
-install_tmux() {
-    # --- Install tmux ---
-    if ! command -v tmux &>/dev/null; then
-        echo "Installing tmux..."
-        sudo apt install -y tmux
-    else
-        echo "tmux is already installed."
-    fi
-}
-install_go() {
-    # Ensure Go is installed
-    if ! command -v go &>/dev/null; then
-        echo "Go not found. Installing Go..."
-        GO_VERSION="1.20.6" # Change this to the latest version if needed
-        wget https://go.dev/dl/go$GO_VERSION.linux-amd64.tar.gz
-        sudo tar -C /usr/local -xzf go$GO_VERSION.linux-amd64.tar.gz
-        rm go$GO_VERSION.linux-amd64.tar.gz
-
-        # Add Go to the PATH
-        echo 'export PATH=$PATH:/usr/local/go/bin' >>~/.zshrc
-        echo 'export GOPATH=$HOME/go' >>~/.zshrc
-        echo 'export PATH=$PATH:$GOPATH/bin' >>~/.zshrc
-
-        # Apply changes immediately for current session
-        export PATH=$PATH:/usr/local/go/bin
-        export GOPATH=$HOME/go
-        export PATH=$PATH:$GOPATH/bin
-    else
-        echo "Go is already installed. Version: $(go version)"
-    fi
-}
-install_lazygit() {
-    # Ensure lazygit is installed
-    if ! command -v lazygit &>/dev/null; then
-        echo "lazygit not found. Installing lazygit..."
-
-        # If Go is installed, use Go to install lazygit
-        if command -v go &>/dev/null; then
-            go install github.com/jesseduffield/lazygit@latest
-            echo 'export PATH=$PATH:$HOME/go/bin' >>~/.zshrc
-            export PATH=$PATH:$HOME/go/bin
-        else
-            echo "Go is required for lazygit installation. Please install Go first."
-        fi
-    else
-        echo "lazygit is already installed. Version: $(lazygit --version)"
-    fi
 }
 
 setup_folders() {
@@ -353,7 +371,7 @@ if [ "$SHELL" != "$(which zsh)" ]; then
 else
     echo "Zsh is already the default shell. Continuing with Neovim installation and stow setup..."
     install_node
-    install_lua 
+    install_lua
     install_luarocks
     install_go
     install_neovim
