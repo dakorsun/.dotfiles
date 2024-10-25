@@ -142,6 +142,14 @@ source $ZSH/oh-my-zsh.sh
 source ~/.zsh_profile
 
 bindkey -v
+bindkey -M vicmd 'y' vi-yank-xclip
+# Use this widget to copy text to clipboard in vi mode
+vi-yank-xclip() {
+    BUFFER=$(print -r -- "$LBUFFER$RBUFFER")  # Get the line content
+    print -n -- "$BUFFER" | xclip -selection clipboard  # Copy to clipboard
+    zle kill-buffer  # Clears the buffer
+}
+zle -N vi-yank-xclip  # Link the widget to zle
 
 bindkey ^R history-incremental-search-backward 
 bindkey ^S history-incremental-search-forward
