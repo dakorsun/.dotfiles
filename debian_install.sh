@@ -108,13 +108,6 @@ install_lua() {
 
         echo "Lua installed successfully."
 
-        # Add Lua to the PATH if not already present
-        if ! grep -q "/usr/local/bin" ~/.zshrc; then
-            echo 'export PATH=$PATH:/usr/local/bin' >>~/.zshrc
-        fi
-
-        # Source the updated .zshrc
-        source ~/.zshrc
     else
         lua_version=$(lua -v 2>&1 | grep -oP 'Lua \K\d+\.\d+')
         echo "Lua is already installed. Version: $lua_version"
@@ -164,15 +157,6 @@ install_go() {
         sudo tar -C /usr/local -xzf go$GO_VERSION.linux-amd64.tar.gz
         rm go$GO_VERSION.linux-amd64.tar.gz
 
-        # Add Go to the PATH
-        echo 'export PATH=$PATH:/usr/local/go/bin' >>~/.zshrc
-        echo 'export GOPATH=$HOME/go' >>~/.zshrc
-        echo 'export PATH=$PATH:$GOPATH/bin' >>~/.zshrc
-
-        # Apply changes immediately for current session
-        export PATH=$PATH:/usr/local/go/bin
-        export GOPATH=$HOME/go
-        export PATH=$PATH:$GOPATH/bin
     else
         echo "Go is already installed. Version: $(go version)"
     fi
@@ -199,14 +183,14 @@ install_neovim() {
 
     # --- Clean up any old 'nvim' alias ---
     # Remove alias from .zshrc, .bashrc, etc.
-    sed -i '/alias nvim/d' "$HOME/.zshrc"
-    sed -i '/alias nvim/d' "$HOME/.bashrc"
+    # sed -i '/alias nvim/d' "$HOME/.zshrc"
+    # sed -i '/alias nvim/d' "$HOME/.bashrc"
 
     # Set Neovim alias to point to the version built from source
-    if ! grep -q "alias nvim=" "$HOME/.zshrc"; then
-        echo "alias nvim='/usr/local/bin/nvim'" >>"$HOME/.zshrc"
-        source "$HOME/.zshrc"
-    fi
+    # if ! grep -q "alias nvim=" "$HOME/.zshrc"; then
+    #     echo "alias nvim='/usr/local/bin/nvim'" >>"$HOME/.zshrc"
+    #     source "$HOME/.zshrc"
+    # fi
 
     # --- Remove Packer.nvim if exists ---
     if [ -d "$HOME/.local/share/nvim/site/pack/packer" ]; then
@@ -232,8 +216,8 @@ install_lazygit() {
         # If Go is installed, use Go to install lazygit
         if command -v go &>/dev/null; then
             go install github.com/jesseduffield/lazygit@latest
-            echo 'export PATH=$PATH:$HOME/go/bin' >>~/.zshrc
-            export PATH=$PATH:$HOME/go/bin
+            # echo 'export PATH=$PATH:$HOME/go/bin' >>~/.zshrc
+            # export PATH=$PATH:$HOME/go/bin
         else
             echo "Go is required for lazygit installation. Please install Go first."
         fi
@@ -377,8 +361,8 @@ else
     install_neovim
     install_lazygit
     install_tmux
-    run_stow
-    setup_folders
+    # run_stow
+    # setup_folders
     install_fonts
     echo "Setup complete! Please restart your terminal for changes to take full effect."
 fi
