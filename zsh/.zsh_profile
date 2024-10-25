@@ -18,9 +18,9 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 export GOPATH=$HOME/go
 export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
 
-alias nvim="$HOME/nvim.appimage"
-
 bindkey -s ^f "tmux-sessionizer.sh\n"
+
+alias tmux="tmux"
 
 eslintify() {
     cat $1 > /tmp/file_to_eslint

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # --- Variables ---
-NEOVIM_VERSION="stable"  # Set 'stable' for the latest release, or specify a version (e.g., 'v0.9.0')
+NEOVIM_VERSION="stable" # Set 'stable' for the latest release, or specify a version (e.g., 'v0.9.0')
 NEOVIM_DIR="$HOME/neovim"
 DOTFILES="$HOME/.dotfiles"
 STOW_FOLDERS="bin,nvim,tmux,debian,zsh"
@@ -12,10 +12,9 @@ FONT_DIR="$HOME/.fonts"
 FONT_CONFIG_DIR="$HOME/.config/fontconfig/conf.d"
 NERD_FONTS_DIR="$FONT_DIR/Nerd_Fonts"
 NERD_FONTS_VERSION="v2.3.3"
-NERD_FONTS=("3270" "FiraCode" "Hack" "RobotoMono")  # Add more fonts to the array if needed
+NERD_FONTS=("3270" "FiraCode" "Hack" "RobotoMono") # Add more fonts to the array if needed
 POWERLINE_FONT_URL="https://github.com/powerline/powerline/raw/develop/font/PowerlineSymbols.otf"
 POWERLINE_CONF_URL="https://github.com/powerline/powerline/raw/develop/font/10-powerline-symbols.conf"
-
 
 # --- Functions ---
 install_zsh() {
@@ -46,6 +45,70 @@ install_zsh() {
     echo -e "\nPlease close this terminal and open a new one for Zsh to take effect."
     echo -e "\nAfter reopening, rerun this script to continue with Neovim installation and stow setup.\n"
 }
+#
+# Ensure Lua is installed
+install_lua() {
+    if ! command -v lua &> /dev/null; then
+        echo "Lua not found. Installing Lua 5.1..."
+        
+        # Update package list and install required dependencies
+        sudo apt update
+        sudo apt install -y build-essential libreadline-dev
+
+        # Download and install Lua 5.1
+        LUA_VERSION="5.1.5"
+        wget http://www.lua.org/ftp/lua-$LUA_VERSION.tar.gz
+        tar -zxf lua-$LUA_VERSION.tar.gz
+        cd lua-$LUA_VERSION || exit
+        make linux test
+        sudo make install
+        cd .. || exit
+        rm -rf lua-$LUA_VERSION*
+        
+        echo "Lua installed successfully."
+        
+        # Add Lua to the PATH if not already present
+        if ! grep -q "/usr/local/bin" ~/.zshrc; then
+            echo 'export PATH=$PATH:/usr/local/bin' >> ~/.zshrc
+        fi
+
+        # Source the updated .zshrc
+        source ~/.zshrc
+    else
+        lua_version=$(lua -v 2>&1 | grep -oP 'Lua \K\d+\.\d+')
+        echo "Lua is already installed. Version: $lua_version"
+        
+        if [[ "$lua_version" != "5.1" ]]; then
+            echo "Please install Lua version 5.1."
+            exit 1
+        fi
+    fi
+}
+
+# Ensure LuaRocks is installed
+install_luarocks() {
+    if ! command -v luarocks &> /dev/null; then
+        echo "LuaRocks not found. Installing LuaRocks..."
+        
+        # Download and install LuaRocks for Lua 5.1
+        LUAROCKS_VERSION="3.9.2" # Adjust this to the latest version if needed
+        wget https://luarocks.github.io/luarocks/releases/luarocks-$LUAROCKS_VERSION.tar.gz
+        tar -xzf luarocks-$LUAROCKS_VERSION.tar.gz
+        cd luarocks-$LUAROCKS_VERSION || exit
+        
+        # Configure LuaRocks
+        ./configure --with-lua=/usr/local
+        make
+        sudo make install
+        
+        cd .. || exit
+        rm -rf luarocks-$LUAROCKS_VERSION*
+
+        echo "LuaRocks installed successfully."
+    else
+        echo "LuaRocks is already installed. Version: $(luarocks --version)"
+    fi
+}
 
 install_neovim() {
     echo "Installing dependencies for building Neovim..."
@@ -71,7 +134,7 @@ install_neovim() {
 
     # Set Neovim alias to point to the version built from source
     if ! grep -q "alias nvim=" "$HOME/.zshrc"; then
-        echo "alias nvim='/usr/local/bin/nvim'" >> "$HOME/.zshrc"
+        echo "alias nvim='/usr/local/bin/nvim'" >>"$HOME/.zshrc"
         source "$HOME/.zshrc"
     fi
 
@@ -90,8 +153,7 @@ install_neovim() {
 }
 
 run_stow() {
-    if ! command -v stow &> /dev/null
-    then
+    if ! command -v stow &>/dev/null; then
         echo "Stow is not installed. Installing Stow..."
         sudo apt update
         sudo apt install -y stow
@@ -101,8 +163,7 @@ run_stow() {
 
     echo "Running Stow for configuration files..."
     pushd "$DOTFILES"
-    for folder in $(echo $STOW_FOLDERS | sed "s/,/ /g")
-    do
+    for folder in $(echo $STOW_FOLDERS | sed "s/,/ /g"); do
         echo "Stowing $folder"
         stow $folder
     done
@@ -111,38 +172,89 @@ run_stow() {
 }
 
 install_node() {
-# --- Install NVM (Node Version Manager) ---
-if [ ! -d "$HOME/.nvm" ]; then
-    echo "Installing NVM..."
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+    # --- Install NVM (Node Version Manager) ---
+    # Ensure NVM is installed
+    if ! command -v nvm &>/dev/null; then
+        echo "nvm not found. Installing nvm..."
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
 
-    # Load NVM into the current shell session
-    export NVM_DIR="$HOME/.nvm"
-    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+        # Load nvm into current shell session
+        export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    else
+        echo "nvm already installed."
+    fi
 
-    echo "NVM installed."
-else
-    echo "NVM is already installed."
-fi
-
-# --- Install Node.js via NVM (Latest 18.x) ---
-if ! command -v node &> /dev/null; then
-    echo "Installing Node.js (latest 18.x)..."
-    nvm install 18
-    nvm use 18
-else
-    echo "Node.js is already installed."
-fi
+    if ! nvm list | grep "v18.16" &>/dev/null; then
+        echo "Installing Node.js version 18.16..."
+        nvm install 18.16
+        nvm alias default 18.16
+        nvm use 18.16
+    else
+        echo "Node.js version 18.16 is already installed."
+    fi
+    # Ensure pnpm version 9 is installed
+    if ! command -v pnpm &>/dev/null; then
+        echo "pnpm not found. Installing pnpm version 9..."
+        npm install -g pnpm@9
+    else
+        installed_pnpm_version=$(pnpm --version)
+        if [[ "$installed_pnpm_version" == 9* ]]; then
+            echo "pnpm version 9 is already installed."
+        else
+            echo "Updating pnpm to version 9..."
+            npm install -g pnpm@9
+        fi
+    fi
 }
-install_stow() {
-# --- Install tmux ---
-if ! command -v tmux &> /dev/null; then
-    echo "Installing tmux..."
-    sudo apt install -y tmux
-else
-    echo "tmux is already installed."
-fi
+
+install_tmux() {
+    # --- Install tmux ---
+    if ! command -v tmux &>/dev/null; then
+        echo "Installing tmux..."
+        sudo apt install -y tmux
+    else
+        echo "tmux is already installed."
+    fi
+}
+install_go() {
+    # Ensure Go is installed
+    if ! command -v go &>/dev/null; then
+        echo "Go not found. Installing Go..."
+        GO_VERSION="1.20.6" # Change this to the latest version if needed
+        wget https://go.dev/dl/go$GO_VERSION.linux-amd64.tar.gz
+        sudo tar -C /usr/local -xzf go$GO_VERSION.linux-amd64.tar.gz
+        rm go$GO_VERSION.linux-amd64.tar.gz
+
+        # Add Go to the PATH
+        echo 'export PATH=$PATH:/usr/local/go/bin' >>~/.zshrc
+        echo 'export GOPATH=$HOME/go' >>~/.zshrc
+        echo 'export PATH=$PATH:$GOPATH/bin' >>~/.zshrc
+
+        # Apply changes immediately for current session
+        export PATH=$PATH:/usr/local/go/bin
+        export GOPATH=$HOME/go
+        export PATH=$PATH:$GOPATH/bin
+    else
+        echo "Go is already installed. Version: $(go version)"
+    fi
+}
+install_lazygit() {
+    # Ensure lazygit is installed
+    if ! command -v lazygit &>/dev/null; then
+        echo "lazygit not found. Installing lazygit..."
+
+        # If Go is installed, use Go to install lazygit
+        if command -v go &>/dev/null; then
+            go install github.com/jesseduffield/lazygit@latest
+            echo 'export PATH=$PATH:$HOME/go/bin' >>~/.zshrc
+            export PATH=$PATH:$HOME/go/bin
+        else
+            echo "Go is required for lazygit installation. Please install Go first."
+        fi
+    else
+        echo "lazygit is already installed. Version: $(lazygit --version)"
+    fi
 }
 
 setup_folders() {
@@ -219,29 +331,33 @@ verify_fonts_installed() {
     done
 }
 
-install_fonts(){
-# --- Main Logic ---
+install_fonts() {
+    # --- Main Logic ---
 
-# Install Powerline fonts and Nerd Fonts
-install_powerline_fonts
-install_nerd_fonts
+    # Install Powerline fonts and Nerd Fonts
+    install_powerline_fonts
+    install_nerd_fonts
 
-# Rebuild the font cache to apply changes
-rebuild_font_cache
+    # Rebuild the font cache to apply changes
+    rebuild_font_cache
 
-# Verify the installation of fonts
-verify_fonts_installed
+    # Verify the installation of fonts
+    verify_fonts_installed
 }
 
 # --- Main Setup Logic ---
 if [ "$SHELL" != "$(which zsh)" ]; then
     echo "Zsh is not the current shell. Starting with Zsh installation..."
     install_zsh
-    exit 0  # Stop the script so the user can reopen the terminal in Zsh
+    exit 0 # Stop the script so the user can reopen the terminal in Zsh
 else
     echo "Zsh is already the default shell. Continuing with Neovim installation and stow setup..."
     install_node
+    install_lua 
+    install_luarocks
+    install_go
     install_neovim
+    install_lazygit
     install_tmux
     run_stow
     setup_folders
