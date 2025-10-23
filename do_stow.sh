@@ -1,5 +1,8 @@
 #!/usr/bin/env zsh
 
+DOTFILES="$HOME/.dotfiles"
+STOW_FOLDERS="bin,nvim,tmux,debian,zsh,lazygit"
+
 echo ''
 echo 'Run stow'
 if ! command -v stow &>/dev/null; then
