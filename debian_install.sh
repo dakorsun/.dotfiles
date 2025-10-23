@@ -181,16 +181,9 @@ install_neovim() {
     make CMAKE_BUILD_TYPE=Release
     sudo make install
 
-    # --- Clean up any old 'nvim' alias ---
-    # Remove alias from .zshrc, .bashrc, etc.
-    # sed -i '/alias nvim/d' "$HOME/.zshrc"
-    # sed -i '/alias nvim/d' "$HOME/.bashrc"
-
-    # Set Neovim alias to point to the version built from source
-    # if ! grep -q "alias nvim=" "$HOME/.zshrc"; then
-    #     echo "alias nvim='/usr/local/bin/nvim'" >>"$HOME/.zshrc"
-    #     source "$HOME/.zshrc"
-    # fi
+    # --- Set Git core editor to Neovim ---
+    echo "Setting Git core editor to Neovim..."
+    git config --global core.editor "nvim"
 
     # --- Remove Packer.nvim if exists ---
     if [ -d "$HOME/.local/share/nvim/site/pack/packer" ]; then
