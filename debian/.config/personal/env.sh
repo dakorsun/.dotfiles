@@ -1,4 +1,4 @@
-export STOW_FOLDERS="bin,nvim,tmux,ubuntu,zsh"
+export STOW_FOLDERS="bin,nvim,tmux,debian,zsh"
 
 addToPath() {
     if [[ "$PATH" != *"$1"* ]]; then
