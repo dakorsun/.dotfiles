@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 DOTFILES="$HOME/.dotfiles"
-STOW_FOLDERS="systemd,bash,vim,nvim,X,i3"
+STOW_FOLDERS="systemd,bash,vim,nvim,xorg,i3"
 
 echo ''
 echo 'Run stow'
