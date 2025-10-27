@@ -1,14 +1,13 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
 DOTFILES="$HOME/.dotfiles"
-STOW_FOLDERS="bin,nvim,tmux,debian,zsh,lazygit"
+STOW_FOLDERS="systemd,bash,alacritty,vim,nvim,xorg,i3"
 
 echo ''
 echo 'Run stow'
-if ! command -v stow &>/dev/null; then
+if ! pacman -Qi stow &>/dev/null; then
     echo "Stow is not installed. Installing Stow..."
-    sudo apt update
-    sudo apt install -y stow
+   sudo pacman -S stow 
 else
     echo "Stow is already installed."
 fi

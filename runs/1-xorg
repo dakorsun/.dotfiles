@@ -1,0 +1,7 @@
+cd $HOME/downloads/AUR
+rm -rf ./xkblayout-state-git
+git clone https://aur.archlinux.org/xkblayout-state-git.git
+cd xkblayout-state-git
+makepkg
+# TODO: make logic to retrieve builded package name
+# sudo pacman -U xkblayout-state-git-20......
