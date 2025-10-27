@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-DOTFILES="$HOME/.dotfiles"
-STOW_FOLDERS="systemd,bash,alacritty,vim,nvim,xorg,i3"
+DOTFILES="$HOME/.dotfiles/configs"
+STOW_FOLDERS="systemd,bin,bash,alacritty,nvim,xorg,i3"
 
 echo ''
 echo 'Run stow'
@@ -16,7 +16,7 @@ echo "Running Stow for configuration files..."
 pushd "$DOTFILES"
 for folder in $(echo $STOW_FOLDERS | sed "s/,/ /g"); do
     echo "Stowing $folder"
-    stow $folder
+    stow -R -t $HOME $folder
 done
 popd
 echo "Stow configuration complete!"

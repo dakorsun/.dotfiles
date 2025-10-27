@@ -1,4 +1,4 @@
 [submodule "nvim/.config/nvim"]
-	path = nvim/.config/nvim
+	path = configs/nvim/.config/nvim
 	url = git@github.com:dakorsun/nvim.git
 	branch = develop
