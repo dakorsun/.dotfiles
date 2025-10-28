@@ -28,3 +28,18 @@ alias gd='git diff'
 alias v='nvim'
 alias ..='cd ..'
 alias ...='cd ../..'
+
+alias glg='git log --stats'
+alias glgp='git log --stats -p'
+alias glgg='git log --graph'
+alias glgga='git log --graph --decorate --all'
+alias glgm='git log --graph --max-count=10'
+alias glo='git log --oneline --decorate'
+alias glol="git log --graph --pretty='%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset'"
+alias glols="git log --graph --pretty='%Cred%h%Creset -%C(auto)%d%Creset %s%Cgreen(%ar) %C(bold blue)<%an>%Creset' --stat"
+alias glod="git log --graph --pretty='%Cred%h%Creset -%C(auto)%d%Creset %s%Cgreen(%ad) %C(bold blue)<%an>%Creset'"
+alias glods="git log --graph --pretty='%Cred%h%Creset -%C(auto)%d%Creset %s%Cgreen(%ad) %C(bold blue)<%an>%Creset' --date=short"
+alias glola="git log --graph --pretty='%Cred%h%Creset -%C(auto)%d%Creset %s%Cgreen(%ar) %C(bold blue)<%an>%Creset' --all"
+alias glog='git log --oneline --decorate  --graph'
+alias gloga='git log --oneline --decorate --graph --all'
+alias glp='git log --pretty=<format>'
