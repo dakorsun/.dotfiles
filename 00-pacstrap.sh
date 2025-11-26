@@ -8,10 +8,10 @@ pacstrap /mnt base linux linux-firmware $(cat /mnt/.dotfiles/pacstrapList.txt)
 
 genfstab -U /mnt >> /mnt/etc/fstab
 
-cp /mnt/.dotfiles/10-postinstall.sh /mnt/root/
-chmod +x /mnt/root/10-postinstall.sh
+cp /mnt/.dotfiles/10-postpacstrap.sh /mnt/root/
+chmod +x /mnt/root/10-postpacstrap.sh
 
 echo "✅ Pacstrap done. Now run:"
 echo "arch-chroot /mnt"
-echo "./10-postinstall.sh"
+echo "./10-postpacstrap.sh"
 
