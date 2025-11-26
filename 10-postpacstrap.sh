@@ -3,7 +3,7 @@ set -e
 
 user="danylo"
 
-useradd -m -G wheel -s /bin/zsh "$user"
+useradd -m -G wheel -s /bin/bash "$user"
 echo "$user:password" | chpasswd
 
 pacman -S --noconfirm git vim sudo networkmanager
