@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
+rm -rf /mnt/.dotfiles
 git clone https://github.com/dakorsun/.dotfiles.git /mnt/.dotfiles
 
 pacstrap /mnt base linux linux-firmware $(cat /mnt/.dotfiles/pacstrapList.txt)
