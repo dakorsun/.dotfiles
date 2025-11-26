@@ -3,7 +3,7 @@ set -e
 
 git clone https://github.com/dakorsun/.dotfiles.git /mnt/.dotfiles
 
-pacstrap /mnt base linux linux-firmware $(cat /mnt/.dotfiles/pkglist.txt)
+pacstrap /mnt base linux linux-firmware $(cat /mnt/.dotfiles/pacstrapList.txt)
 
 genfstab -U /mnt >> /mnt/etc/fstab
 
