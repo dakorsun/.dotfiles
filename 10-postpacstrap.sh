@@ -9,6 +9,12 @@ set -e
 
 user="danylo"
 
+if id "$user" &>/dev/null; then
+    pkill -u "$user" || true
+    userdel -r "$user" || true
+    groupdel "$user" 2>/dev/null || true
+fi
+
 useradd -m -G wheel -s /bin/bash "$user"
 echo "$user:password" | chpasswd
 
