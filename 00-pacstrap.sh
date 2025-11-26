@@ -16,6 +16,5 @@ echo "Pacstrap done. Now run:"
 echo "arch-chroot /mnt"
 echo "and then set the root password: "
 echo "passwd"
-echo "then run post-script"
-echo "./10-postpacstrap.sh"
+echo "then generate locales and run ~/10-postpacstrap.sh"
 

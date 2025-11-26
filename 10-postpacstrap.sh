@@ -2,8 +2,8 @@
 ln -sf /usr/share/zoneinfo/Area/Location /etc/localtime
 hwclock --systohc
 
-echo "KEYMAP=colemak" >> /etc/vconsole.conf
-echo "deeznuts" >> /etc/hostname
+echo "KEYMAP=colemak" > /etc/vconsole.conf
+echo "deeznuts" > /etc/hostname
 
 set -e
 
