@@ -2,7 +2,7 @@
 set -e
 
 rm -rf /mnt/.dotfiles
-git clone https://github.com/dakorsun/.dotfiles.git /mnt/.dotfiles
+git clone -b feature/new-version https://github.com/dakorsun/.dotfiles.git /mnt/.dotfiles
 
 pacstrap /mnt base linux linux-firmware $(cat /mnt/.dotfiles/pacstrapList.txt)
 
