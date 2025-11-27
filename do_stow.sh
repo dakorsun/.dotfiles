@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 DOTFILES="$HOME/.dotfiles/configs"
-STOW_FOLDERS="systemd,bin,bash,alacritty,nvim,xorg,i3"
+STOW_FOLDERS="systemd,bin,bash,alacritty,nvim,xorg,awesome"
 
 echo ''
 echo 'Run stow'
