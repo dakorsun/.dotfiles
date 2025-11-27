@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-ln -sf /usr/share/zoneinfo/Area/Location /etc/localtime
+ln -sf /usr/share/zoneinfo/Europe/Kyiv /etc/localtime
 hwclock --systohc
 
 echo "KEYMAP=colemak" > /etc/vconsole.conf
