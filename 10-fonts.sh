@@ -10,10 +10,10 @@ cd "$TMP_DIR"
 
 echo ""
 echo "Downloading Mononoke Nerd Font"
-FONT_URL="https://github.com/ryanoasis/nerd-fonts/releases/latesst/download/Mononoke.zip"
-wget -q "$FONT_URL" -O Mononoke.zip
+FONT_URL="https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Mononoki.tar.xz"
+curl -OL "$FONT_URL"
 
-unzip -qq Mononoke.zip -d "$FONT_DIR"
+tar -xz Mononoki.tar.xz
 
 fc-cache -fv
 
