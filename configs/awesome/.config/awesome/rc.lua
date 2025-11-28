@@ -19,6 +19,7 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
 
+naughty.config.defaults.font = "Mononoki Nerd Font 10"
 -- {{{ Error handling
 -- @DOC_ERROR_HANDLING@
 -- Check if awesome encountered an error during startup and fell back to
