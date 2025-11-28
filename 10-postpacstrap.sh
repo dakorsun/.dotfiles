@@ -9,11 +9,11 @@ set -e
 
 user="danylo"
 
-if id "$user" &>/dev/null; then
-    pkill -u "$user" || true
-    userdel -r "$user" || true
-    groupdel "$user" 2>/dev/null || true
-fi
+# if id "$user" &>/dev/null; then
+#     pkill -u "$user" || true
+#     userdel -r "$user" || true
+#     groupdel "$user" 2>/dev/null || true
+# fi
 
 useradd -m -G wheel -s /bin/bash "$user"
 echo "$user:password" | chpasswd
@@ -42,6 +42,8 @@ mkdir -p "$FONT_DIR"
 TMP_DIR=$(mktemp -d)
 cd "$TMP_DIR"
 
+echo ""
+echo "Downloading Mononoke Nerd Font"
 FONT_URL="https://github.com/ryanoasis/nerd-fonts/releases/latesst/download/Mononoke.zip"
 wget -q "$FONT_URL" -O Mononoke.zip
 
