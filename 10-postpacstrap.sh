@@ -5,8 +5,6 @@ hwclock --systohc
 echo "KEYMAP=colemak" > /etc/vconsole.conf
 echo "deeznuts" > /etc/hostname
 
-set -e
-
 user="danylo"
 
 # if id "$user" &>/dev/null; then
