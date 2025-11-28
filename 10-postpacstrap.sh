@@ -19,15 +19,19 @@ useradd -m -G wheel -s /bin/bash "$user"
 echo "$user:password" | chpasswd
 
 pacman -S --noconfirm git vim sudo
-pacman -S --needed ttf-dejavu noto-fonts
+pacman -S --needed noto-fonts
 
 sed -i 's/^# %wheel/%wheel/' /etc/sudoers
 
-su - "$user" -c 'git clone https://aur.archlinux.org/paru.git ~/paru && cd ~/paru && makepkg -si --noconfirm'
-chown -R "$user":"$user" /home/$user/paru
-
 su - "$user" -c 'git clone -b feature/new-version https://github.com/dakorsun/.dotfiles.git ~/.dotfiles || (cd ~/.dotfiles && git pull)'
 chown -R "$user":"$user" /home/$user/.dotfiles
+echo "dotfiles regained"
+
+if ls $HOME/paru &>/dev/null; then
+    su - "$user" -c 'git clone https://aur.archlinux.org/paru.git ~/paru && cd ~/paru && makepkg -si --noconfirm'
+    chown -R "$user":"$user" /home/$user/paru
+    echo "Paru installed"
+fi
 
 
 set -e
@@ -38,7 +42,7 @@ mkdir -p "$FONT_DIR"
 TMP_DIR=$(mktemp -d)
 cd "$TMP_DIR"
 
-FONT_URL="https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.3/Mononoke.zip"
+FONT_URL="https://github.com/ryanoasis/nerd-fonts/releases/latesst/download/Mononoke.zip"
 wget -q "$FONT_URL" -O Mononoke.zip
 
 unzip -qq Mononoke.zip -d "$FONT_DIR"
