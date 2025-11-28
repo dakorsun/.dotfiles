@@ -43,3 +43,7 @@ alias glola="git log --graph --pretty='%Cred%h%Creset -%C(auto)%d%Creset %s%Cgre
 alias glog='git log --oneline --decorate  --graph'
 alias gloga='git log --oneline --decorate --graph --all'
 alias glp='git log --pretty=<format>'
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
