@@ -1,7 +1,5 @@
 set -e
 
-pacman -S --needed noto-fonts
-
 FONT_DIR="$HOME/.local/share/fonts"
 mkdir -p "$FONT_DIR"
 
@@ -15,7 +13,7 @@ echo "Downloading Mononoki Nerd Font"
 FONT_URL="https://github.com/ryanoasis/nerd-fonts/releases/latest/download/$ARCHIVE_NAME"
 curl -OL "$FONT_URL"
 
-tar -xf $ARCHIVE_NAME -O "$FONT_DIR"
+tar -xf $ARCHIVE_NAME -C "$FONT_DIR"
 
 fc-cache -fv
 
