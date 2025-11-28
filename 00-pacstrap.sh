@@ -8,13 +8,13 @@ pacstrap /mnt base linux linux-firmware $(cat /mnt/.dotfiles/pacstrapList.txt)
 
 genfstab -U /mnt >> /mnt/etc/fstab
 
-cp /mnt/.dotfiles/10-postpacstrap.sh /mnt/root/
-chmod +x /mnt/root/10-postpacstrap.sh
+cp /mnt/.dotfiles/01-postpacstrap.sh /mnt/root/
+chmod +x /mnt/root/01-postpacstrap.sh
 
 echo ""
 echo "Pacstrap done. Now run:"
 echo "arch-chroot /mnt"
 echo "and then set the root password: "
 echo "passwd"
-echo "then generate locales and run ~/10-postpacstrap.sh"
+echo "then generate locales and run ~/01-postpacstrap.sh"
 
