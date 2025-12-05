@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 
-export PATH="$HOME/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/neovim/bin:$PATH"
 export EDITOR="nvim"
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
@@ -11,6 +11,4 @@ export NVM_DIR="$HOME/.nvm"
 
 [[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && exec startx
 
-if [ -f ~/.bashrc ]; then
-    . ~/.bashrc
-fi
+bind -x '"\C-f": "tmux-sessionizer.sh"'
