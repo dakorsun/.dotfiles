@@ -1,0 +1,4 @@
+- [] configure gnome keyring for ssh-agent keys persistent between sessions
+- [] add awesomerc as separate submodule
+- [] make .local/bin scripts work
+- [] tmux run-shell command blinks awesome for a millisec and nothing happens visibly
