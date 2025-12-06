@@ -16,7 +16,7 @@ else
 		-and -not -path '*hooks*' \
 		-and -not -path '*logs*' \
 		-and -not -path '*refs*' ;
-		find ~/.dotfiles ~/.dotfiles.git ~/.dotfiles.git/*/nvim ~/projects/* ~/personal/* -maxdepth 0 -type d ;
+		find ~/.dotfiles ~/.awesomerc ~/.dotfiles.git ~/.awesomerc.git ~/.dotfiles.git/*/nvim ~/projects/* ~/personal/* -maxdepth 0 -type d ;
 		find ~/projects/* ~/personal/* ~/work ~/personal ~/personal/junk ~/personal/tutors -mindepth 1 -maxdepth 1 -type d ;
 	} | fzf )
 fi
