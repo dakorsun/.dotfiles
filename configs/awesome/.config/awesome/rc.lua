@@ -109,6 +109,34 @@ mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 -- }}}
 
+-- Text battery widget
+batterywidget = wibox.widget.textbox()
+
+-- Function to update battery info
+local function update_battery_info()
+    awful.spawn.easy_async_with_shell("acpi -b", function(stdout)
+        local perc = stdout:match("(%d?%d?%d)%%")
+        local status = stdout:match(": (%a+),")
+
+        if perc == nil then
+            batterywidget.text = "N/A"
+            return
+        end
+
+        local icon = "x"
+        if status == "Charging" then icon = "+" end
+
+        batterywidget.text = string.format("%s %s%%", icon, perc)
+    end)
+end
+
+local batt_timer = timer({ timeout = 10 })
+batt_timer:connect_signal("timeout", update_battery_info)
+batt_timer:start()
+
+
+update_battery_info()
+
 -- Keyboard map indicator and switcher
 mykeyboardlayout = awful.widget.keyboardlayout()
 
@@ -223,6 +251,7 @@ awful.screen.connect_for_each_screen(function(s)
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
+            batterywidget,
             mykeyboardlayout,
             wibox.widget.systray(),
             mytextclock,
