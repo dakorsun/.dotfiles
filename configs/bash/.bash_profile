@@ -1,6 +1,11 @@
 #! /usr/bin/env bash
 
+if [[ -z $DISPLAY && $XDG_VTNR -eq 1 ]]; then
+    exec startx
+fi
+
 source ~/.git-prompt.sh
+export GIT_PS1_SHOWDIRTYSTATE=true
 
 RED='\[\033[0;31m\]'
 GREEN='\[\033[0;32m\]'
