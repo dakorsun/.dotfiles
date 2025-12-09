@@ -1,5 +1,7 @@
 #! /usr/bin/env bash
 
+source ~/.git-prompt.sh
+
 RED='\[\033[0;31m\]'
 GREEN='\[\033[0;32m\]'
 YELLOW='\[\033[0;33m\]'
@@ -8,15 +10,9 @@ MAGENTA='\[\033[0;35m\]'
 CYAN='\[\033[0;36m\]'
 RESET='\[\033[0m\]'
 
-# Функція для виводу гілки Git
-parse_git_branch() {
-  git branch --show-current
-}
-
-# Промпт
-PS1="\n${BLUE}\u${RESET}@${MAGENTA}\h${RESET}:${CYAN}\w${RESET}\$(
-  branch=$(parse_git_branch)
-  [ -n \"$branch\" ] && echo \" ${YELLOW} $branch${RESET}\"
+# bash prompt
+PS1="\n${BLUE}\u${RESET}@${MAGENTA}\h${RESET}:${CYAN}\w${GREEN}\$(
+__git_ps1 ' (%s)'
 )\n\[$(tput sgr0)\]\[$(tput setaf 3)\]\$(date +%H:%M:%S)\[$(tput sgr0)\] \$([ \$? != 0 ] && echo '💥') \$ "
 
 # ~/.bashrc
