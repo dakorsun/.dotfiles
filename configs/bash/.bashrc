@@ -2,6 +2,8 @@
 
 source ~/.bash_profile
 
+eval $(keychain --eval --quiet github_own)
+
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/neovim/bin:$PATH"
 export EDITOR="nvim"
