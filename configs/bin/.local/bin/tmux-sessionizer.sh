@@ -18,6 +18,7 @@ else
 		-and -not -path '*refs*' ;
 		find ~/.dotfiles ~/.awesomerc ~/.dotfiles.git ~/.awesomerc.git ~/.dotfiles.git/*/nvim ~/projects/* ~/personal/* -maxdepth 0 -type d ;
 		find ~/projects/* ~/personal/* ~/work ~/personal ~/personal/junk ~/personal/tutors -mindepth 1 -maxdepth 1 -type d ;
+        find /run/media/$USER -maxdepth 1 -mindepth 1 -type d; # mounted usb sticks
 	} | fzf )
 fi
 

@@ -45,4 +45,7 @@ alias glog='git log --oneline --decorate  --graph'
 alias gloga='git log --oneline --decorate --graph --all'
 alias glp='git log --pretty=<format>'
 
+alias mnt='udisksctl mount -b'
+alias umnt='udisksctl unmount -b'
+
 bind -x '"\C-f": "tmux-sessionizer.sh"'
