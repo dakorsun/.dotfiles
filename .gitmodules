@@ -2,3 +2,6 @@
 	path = configs/nvim/.config/nvim
 	url = https://github.com/dakorsun/nvim.git
 	branch = develop
+[submodule "configs/nnn/.config/nnn"]
+	path = configs/nnn/.config/nnn
+	url = https://github.com/dakorsun/.nnn.rc
