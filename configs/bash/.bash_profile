@@ -5,6 +5,8 @@ if [[ -z $DISPLAY && $XDG_VTNR -eq 1 ]]; then
 fi
 
 source ~/.git-prompt.sh
+source ~/.nnn.sh
+
 export GIT_PS1_SHOWDIRTYSTATE=true
 
 RED='\[\033[0;31m\]'
@@ -21,7 +23,6 @@ __git_ps1 ' (%s)'
 )\n\[$(tput sgr0)\]\[$(tput setaf 3)\]\$(date +%H:%M:%S)\[$(tput sgr0)\] \$([ \$? != 0 ] && echo '💥') \$ "
 
 # ~/.bashrc
-alias ll='ls -la --color=auto'
 alias gs='git status'
 alias gc='git commit -m'
 alias gp='git push'
