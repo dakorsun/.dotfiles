@@ -426,7 +426,7 @@ globalkeys = gears.table.join(
     -- 🔒 LOCK SCREEN
     -- --------------------------
     awful.key({ modkey, "Control" }, "l",
-        function() awful.spawn("xlock") end,
+        function() awful.spawn("i3lock-fancy") end,
         {description = "lock screen", group = "system"}),
 
     -- --------------------------
