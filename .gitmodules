@@ -5,3 +5,7 @@
 [submodule "configs/nnn/.config/nnn"]
 	path = configs/nnn/.config/nnn
 	url = https://github.com/dakorsun/.nnn.rc
+[submodule "configs/awesome/.config/awesome"]
+	path = configs/awesome/.config/awesome
+	url = git@github.com:dakorsun/.awesomerc
+	branch = modular-4.3
