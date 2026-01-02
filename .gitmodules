@@ -1,11 +1,12 @@
 [submodule "nvim/.config/nvim"]
 	path = configs/nvim/.config/nvim
-	url = https://github.com/dakorsun/nvim.git
+	url = https://github.com/dakorsun/nvim
 	branch = develop
 [submodule "configs/nnn/.config/nnn"]
 	path = configs/nnn/.config/nnn
 	url = https://github.com/dakorsun/.nnn.rc
+	branch = main
 [submodule "configs/awesome/.config/awesome"]
 	path = configs/awesome/.config/awesome
-	url = git@github.com:dakorsun/.awesomerc
+	url = https://github.com/dakorsun/.awesomerc
 	branch = modular-4.3
