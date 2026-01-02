@@ -1,7 +1,8 @@
 - [x] configure ~~gnome~~ keyring for ssh-agent keys persistent between sessions 
-- [] add awesomerc as separate submodule
+- [x] add awesomerc as separate submodule
 - [x] make .local/bin scripts work (have to do separate symbol linking to /usr/local/bin)
 - [] tmux run-shell command blinks awesome for a millisec and nothing happens visibly
 - [] organise install scripts in order
-- packages to add (pacstrap or by related target - i.e. nnn with env for nvim)
-- organise nnn installation
+- [] packages to add (pacstrap or by related target - i.e. nnn with env for nvim)
+- [] organise nnn installation
+- [] make runner (for scripts in a ~runs~ directory)
