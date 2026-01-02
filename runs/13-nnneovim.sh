@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 
-sudo pacman -S base-devel cmake ninja curl git lua51 luarocks lazygit go
+sudo pacman -S base-devel cmake ninja curl git lua51 luarocks lazygit go ripgrep
 
 rm -rf $HOME/downloads/neovim
 git clone -b v0.10.4 https://github.com/neovim/neovim.git $HOME/downloads/neovim
