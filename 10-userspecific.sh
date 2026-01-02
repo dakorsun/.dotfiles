@@ -1,3 +1,16 @@
+su - "$user" -c 'git clone -b feature/new-version https://github.com/dakorsun/.dotfiles.git ~/.dotfiles || (cd ~/.dotfiles && git pull)'
+chown -R "$user":"$user" /home/$user/.dotfiles
+echo "dotfiles regained"
+
+if [[ ! -d $HOME/paru ]]; then
+    su - "$user" -c 'git clone https://aur.archlinux.org/paru.git ~/paru && cd ~/paru && makepkg -si --noconfirm'
+    chown -R "$user":"$user" /home/$user/paru
+    echo "Paru installed"
+fi
+
+echo "Creating necessary directories..."
+mkdir -p ~/personal/junk ~/personal/tutors ~/projects ~/work ~/.config/fontconfig/conf.d
+
 ###############################################
 # SYSTEMD SERVICES SETUP
 ###############################################

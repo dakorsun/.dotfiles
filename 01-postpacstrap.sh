@@ -20,13 +20,3 @@ pacman -S --noconfirm git vim sudo
 pacman -S --needed noto-fonts
 
 sed -i 's/^# %wheel/%wheel/' /etc/sudoers
-
-su - "$user" -c 'git clone -b feature/new-version https://github.com/dakorsun/.dotfiles.git ~/.dotfiles || (cd ~/.dotfiles && git pull)'
-chown -R "$user":"$user" /home/$user/.dotfiles
-echo "dotfiles regained"
-
-if ls $HOME/paru &>/dev/null; then
-    su - "$user" -c 'git clone https://aur.archlinux.org/paru.git ~/paru && cd ~/paru && makepkg -si --noconfirm'
-    chown -R "$user":"$user" /home/$user/paru
-    echo "Paru installed"
-fi
