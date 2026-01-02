@@ -8,7 +8,7 @@ pacstrap /mnt base linux linux-firmware $(cat /mnt/.dotfiles/pacstrapList.txt)
 
 genfstab -U /mnt >> /mnt/etc/fstab
 
-cp /mnt/.dotfiles/01-postpacstrap.sh /mnt/root/
+cp /mnt/.dotfiles/runs/01-postpacstrap.sh /mnt/root/
 chmod +x /mnt/root/01-postpacstrap.sh
 
 echo ""
