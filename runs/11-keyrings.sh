@@ -1,2 +1,0 @@
-#!/urs/bin/env bash
-
