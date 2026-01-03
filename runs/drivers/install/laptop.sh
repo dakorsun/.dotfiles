@@ -2,7 +2,7 @@
 
 install_laptop_tools() {
     sudo pacman -S --needed \
-        tlp tlp-rdw \
+        brightnessctl tlp tlp-rdw \
         powertop acpid
 
     paru -S laptop-mode-tools

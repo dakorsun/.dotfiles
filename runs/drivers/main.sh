@@ -12,6 +12,7 @@ source ./install/gpu.sh
 source ./install/input.sh
 source ./install/laptop.sh
 source ./install/utils.sh
+source ./install/wifi.sh
 
 detect_cpu
 detect_gpu
@@ -23,3 +24,4 @@ install_gpu_drivers
 install_input_drivers
 install_laptop_tools
 install_utils
+install_wifi
