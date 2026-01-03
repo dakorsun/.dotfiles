@@ -1,0 +1,3 @@
+grub efibootmgr base-devel vim which sudo \
+openssh keychain less git \
+awesome fzf dex dmenu alacritty
