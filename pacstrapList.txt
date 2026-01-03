@@ -1,1 +1,3 @@
-grub efibootmgr base-devel vim networkmanager which sudo dhcpcd openssh keychain iwd less intel-ucode mesa alsa-utils git tlp brightnessctl xorg-server xorg-xinit xorg-xrandr xterm xclip awesome fzf dex dmenu alacritty rofi
+grub efibootmgr base-devel vim which sudo \
+openssh keychain less git \
+awesome fzf dex dmenu alacritty
