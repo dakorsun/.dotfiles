@@ -1,3 +1,5 @@
+user=danylo
+
 su - "$user" -c 'git clone -b feature/new-version https://github.com/dakorsun/.dotfiles.git ~/.dotfiles || (cd ~/.dotfiles && git pull)'
 chown -R "$user":"$user" /home/$user/.dotfiles
 echo "dotfiles regained"
