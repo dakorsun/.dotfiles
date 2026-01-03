@@ -12,7 +12,6 @@ source $PWD/runs/drivers/install/gpu.sh
 source $PWD/runs/drivers/install/input.sh
 source $PWD/runs/drivers/install/laptop.sh
 source $PWD/runs/drivers/install/utils.sh
-source $PWD/runs/drivers/install/wifi.sh
 
 detect_cpu
 detect_gpu
@@ -24,4 +23,3 @@ install_gpu_drivers
 install_input_drivers
 install_laptop_tools
 install_utils
-install_wifi

@@ -2,8 +2,8 @@
 ln -sf /usr/share/zoneinfo/Europe/Kyiv /etc/localtime
 hwclock --systohc
 
-echo "KEYMAP=colemak" > /etc/vconsole.conf
-echo "deeznuts" > /etc/hostname
+echo "KEYMAP=colemak" >/etc/vconsole.conf
+echo "deeznuts" >/etc/hostname
 
 user="danylo"
 
@@ -18,5 +18,6 @@ echo "$user:password" | chpasswd
 
 pacman -S --noconfirm git vim sudo
 pacman -S --needed noto-fonts
+pacman -S --needed iwd networkmanager
 
 sed -i 's/^# %wheel/%wheel/' /etc/sudoers
