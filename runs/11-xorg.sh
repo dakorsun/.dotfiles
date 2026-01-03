@@ -1,3 +1,6 @@
 #!/usr/bin/env bash
 
-sudo paru -S xkblayout-state-git
+sudo pacman -S --needed \
+    xorg-server xorg-xinit xorg-xrandr \
+    xterm xclip xorg-xdpyinfo
+
