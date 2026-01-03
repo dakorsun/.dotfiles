@@ -12,4 +12,5 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 nvm install 18
 nvm install 20 
 nvm install 22
+nvm install 24
 nvm alias default 18
