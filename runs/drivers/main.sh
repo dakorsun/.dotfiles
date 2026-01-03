@@ -2,17 +2,17 @@
 
 set -euo pipefail
 
-source ./detect/cpu.sh
-source ./detect/gpu.sh
+source $PWD/runs/drivers/detect/cpu.sh
+source $PWD/runs/drivers/detect/gpu.sh
 
-source ./install/audio.sh
-source ./install/bluetooth.sh
-source ./install/cpu.sh
-source ./install/gpu.sh
-source ./install/input.sh
-source ./install/laptop.sh
-source ./install/utils.sh
-source ./install/wifi.sh
+source $PWD/runs/drivers/install/audio.sh
+source $PWD/runs/drivers/install/bluetooth.sh
+source $PWD/runs/drivers/install/cpu.sh
+source $PWD/runs/drivers/install/gpu.sh
+source $PWD/runs/drivers/install/input.sh
+source $PWD/runs/drivers/install/laptop.sh
+source $PWD/runs/drivers/install/utils.sh
+source $PWD/runs/drivers/install/wifi.sh
 
 detect_cpu
 detect_gpu
