@@ -58,9 +58,9 @@ enable_services=(
 ###############################################
 # --- TLP mask rfkill backend ---
 ###############################################
-echo ">> Patching rfkill for TLP stability..."
-systemctl mask systemd-rfkill.service 2>/dev/null || true
-systemctl mask systemd-rfkill.socket 2>/dev/null || true
+# echo ">> Patching rfkill for TLP stability..."
+# systemctl mask systemd-rfkill.service 2>/dev/null || true
+# systemctl mask systemd-rfkill.socket 2>/dev/null || true
 
 
 
